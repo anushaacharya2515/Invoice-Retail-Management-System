@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailPro | Store Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body data-theme="light">
+
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo"><i class="fas fa-store-alt"></i> <span id="navLogoText">RetailPro</span></div>
+            <ul>
+                <li onclick="showView('dashboard')" id="nav-dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</li>
+                <li onclick="showView('history')" id="nav-history"><i class="fas fa-scroll"></i> Activity Logs</li>
+                <li onclick="showView('settings')" id="nav-settings"><i class="fas fa-user-shield"></i> Settings</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div id="view-dashboard" class="page-view">
+                <header class="view-header">
+                    <h1>Store Operations</h1>
+                    <button class="btn btn-secondary" onclick="generateDailyReport()"><i class="fas fa-file-invoice"></i> Today's Report</button>
+                </header>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-money-bill-wave"></i></div>
+                        <div><h2 id="totalRevenue">0</h2><p>Cash Collected</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red"><i class="fas fa-file-invoice-dollar"></i></div>
+                        <div><h2 id="totalPending">0</h2><p>Total Udhaar</p></div>
+                    </div>
+                    <div class="stat-card chart-card"><canvas id="invoiceChart"></canvas></div>
+                </div>
+
+                <div class="grid-content">
+                    <div class="card">
+                        <h3>New Bill Entry</h3>
+                        <div class="form-container">
+                            <input type="text" id="clientName" placeholder="Customer Name">
+                            <input type="number" id="amount" placeholder="Items Total Amount">
+                            <label>Payment Status</label>
+                            <select id="paymentStatus">
+                                <option value="Paid">✅ Paid Now</option>
+                                <option value="Pending">🕒 Udhaar (Pending)</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="saveInvoice()">Confirm Sale</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                            <h3>Transactions</h3>
+                            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="🔍 Search customer...">
+                        </div>
+                        <table class="invoice-table">
+                            <thead id="tableHead"></thead>
+                            <tbody id="invoiceList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-settings" class="page-view" style="display:none;">
+                <header class="view-header"><h1>Enterprise Configuration</h1></header>
+                <div class="settings-grid card">
+                    <div class="settings-body">
+                        <label>Store/Shop Name</label><input type="text" id="setBizName">
+                        <label>Store Address</label><textarea id="setBizAddr" rows="3"></textarea>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                            <div><label>Tax Label</label><input type="text" id="setTaxLabel"></div>
+                            <div><label>Tax Rate (%)</label><input type="number" id="setTaxRate"></div>
+                        </div>
+                        <label>Currency</label>
+                        <select id="setCurrency"><option value="$">USD ($)</option><option value="₹">INR (₹)</option></select>
+                        <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:15px;">Update Store Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-history" class="page-view" style="display:none;">
+                <header class="view-header"><h1>Audit Logs</h1></header>
+                <div class="card"><ul id="historyList" class="log-list"></ul></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
